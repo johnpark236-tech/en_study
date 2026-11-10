@@ -1,0 +1,16 @@
+{
+  "name": "매일 일상영어",
+  "short_name": "일상영어",
+  "description": "기초부터 고급까지 하루 1~2시간 매일 영어 학습",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f4ef",
+  "theme_color": "#1f6f5c",
+  "lang": "ko",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

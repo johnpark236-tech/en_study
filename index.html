@@ -1,1 +1,593 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f6f5c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>매일 일상영어</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2320;--sub:#69736e;--line:#e6e2d9;--pri:#1f6f5c;--pri2:#e7f2ee;--acc:#f2a33a;--bad:#d9480f;--good:#2b8a3e;--r:18px;--lv:#1f6f5c}
+@media (prefers-color-scheme:dark){:root{--bg:#121513;--card:#1c201e;--ink:#eef1ef;--sub:#9aa5a0;--line:#2c322f;--pri:#4cc3a0;--pri2:#1f2d28}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:16px;line-height:1.5}
+#app{max-width:560px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top) + 8px) 16px calc(env(safe-area-inset-bottom) + 90px)}
+h1,h2,h3{margin:0;line-height:1.25}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.top{display:flex;align-items:center;justify-content:space-between;padding:8px 0 14px}
+.brand{font-weight:900;font-size:20px;letter-spacing:-.5px}.brand span{color:var(--pri)}
+.icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--card);border:1px solid var(--line);font-size:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.hero{background:linear-gradient(135deg,var(--pri),#2b8f75);color:#fff;border:0}
+.hero .muted{color:#d9efe7}
+.muted{color:var(--sub);font-size:14px}
+.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stat{background:rgba(255,255,255,.14);border-radius:14px;padding:10px;text-align:center}
+.stat b{display:block;font-size:22px;font-weight:900}
+.stat small{font-size:12px;opacity:.85}
+.ring{height:10px;border-radius:9px;background:rgba(255,255,255,.25);overflow:hidden;margin-top:12px}
+.ring i{display:block;height:100%;background:#ffd166;border-radius:9px;transition:width .4s}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px 18px;border-radius:14px;background:var(--pri);color:#fff;font-weight:700;font-size:16px}
+.btn.alt{background:var(--pri2);color:var(--pri)}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn.white{background:#fff;color:var(--pri)}
+.btn:disabled{opacity:.45}
+.btn.sm{padding:10px 12px;font-size:14px;border-radius:12px;width:auto}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:none}
+.tab{flex:1;min-width:76px;padding:10px 6px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:14px;text-align:center}
+.tab.on{background:var(--lv);color:#fff;border-color:var(--lv)}
+.lesson{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;width:100%;text-align:left}
+.lesson .num{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:900;background:var(--pri2);color:var(--lv);flex:none}
+.lesson.done .num{background:var(--lv);color:#fff}
+.lesson .grow{flex:1;min-width:0}.lesson b{display:block}.lesson small{color:var(--sub)}
+.chip{display:inline-block;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:700;background:var(--pri2);color:var(--pri)}
+.steps{display:flex;gap:4px;margin:6px 0 12px}
+.steps i{flex:1;height:6px;border-radius:5px;background:var(--line)}
+.steps i.on{background:var(--lv)}.steps i.cur{background:var(--acc)}
+.sthead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.sthead h2{font-size:21px;font-weight:900}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:13px;color:var(--sub);text-align:right;white-space:nowrap}
+.flash{min-height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;user-select:none}
+.flash .en{font-size:30px;font-weight:900;letter-spacing:-.5px}
+.flash .ko{font-size:20px;color:var(--pri);margin-top:12px;font-weight:700}
+.flash .hint{font-size:13px;color:var(--sub);margin-top:16px}
+.say{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--pri2);color:var(--pri);font-size:18px;flex:none}
+.line{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.line:last-child{border-bottom:0}
+.who{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:900;flex:none;margin-top:2px}
+.who.A{background:#dbeafe;color:#1d4ed8}.who.B{background:#fde8d7;color:#c2410c}
+.line .t{flex:1}.line .t .e{font-weight:600}.line .t .k{font-size:14px;color:var(--sub)}
+.line.playing{background:var(--pri2);border-radius:10px}
+.hide-en .e{filter:blur(6px)}.hide-ko .k{display:none}
+.pattern{border-left:4px solid var(--lv);padding-left:12px;margin-bottom:6px}
+.pattern b{font-size:19px}
+.ex{display:flex;gap:10px;align-items:center;padding:9px 0}
+.ex .t{flex:1}.ex .k{font-size:14px;color:var(--sub)}
+.cnt{min-width:58px;padding:8px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-weight:700;font-size:13px}
+.cnt.full{background:var(--good);color:#fff;border-color:var(--good)}
+.choice{display:block;width:100%;text-align:left;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);margin-bottom:8px;font-weight:600}
+.choice.ok{border-color:var(--good);background:#e9f7ec;color:#1b5e20}
+.choice.no{border-color:var(--bad);background:#fdeee6;color:#9a3412}
+.tokens{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border-radius:14px;border:1.5px dashed var(--line);margin-bottom:10px}
+.tok{padding:8px 12px;border-radius:10px;background:var(--pri2);color:var(--pri);font-weight:700}
+.tok.used{opacity:.25;pointer-events:none}
+input[type=text],textarea{width:100%;font:inherit;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+.result{padding:12px 14px;border-radius:14px;margin-top:10px;font-size:15px}
+.result.ok{background:#e9f7ec;color:#1b5e20}.result.no{background:#fdeee6;color:#9a3412}
+.diff .m{color:var(--good);font-weight:700}.diff .x{color:var(--bad);text-decoration:underline;font-weight:700}
+.mic{width:86px;height:86px;border-radius:50%;background:var(--lv);color:#fff;font-size:34px;display:grid;place-items:center;margin:8px auto;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.mic.rec{background:var(--bad);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.07)}}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px calc(env(safe-area-inset-bottom) + 10px);z-index:5}
+.bar .in{max-width:560px;margin:0 auto;display:flex;gap:8px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+.day{text-align:center;font-size:11px;color:var(--sub)}
+.day i{display:block;height:54px;border-radius:9px;background:var(--line);position:relative;overflow:hidden;margin-bottom:4px}
+.day i b{position:absolute;left:0;right:0;bottom:0;background:var(--pri);border-radius:9px}
+.set{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);gap:10px}
+.set:last-child{border-bottom:0}
+.seg{display:flex;background:var(--bg);border-radius:12px;padding:3px;border:1px solid var(--line)}
+.seg button{padding:8px 12px;border-radius:9px;font-weight:700;font-size:14px}
+.seg button.on{background:var(--pri);color:#fff}
+select{font:inherit;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);max-width:190px}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:9;opacity:0;transition:.3s;pointer-events:none}
+.toast.on{opacity:.95}
+.big-emoji{font-size:64px;text-align:center}
+.tip{background:#fff8e8;color:#7a4b00;border-radius:14px;padding:12px 14px;font-size:14px;margin-bottom:14px}
+@media (prefers-color-scheme:dark){.tip{background:#2e2715;color:#f2d38a}.choice.ok,.result.ok{background:#16301d;color:#a6e3b3}.choice.no,.result.no{background:#3a1f14;color:#f6b896}.who.A{background:#1e2c48;color:#9cc0ff}.who.B{background:#3d2717;color:#ffb98a}}
+.sec-title{font-weight:900;font-size:17px;margin:20px 0 10px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<script src="data.js"></script>
+<script>
+(function(){
+"use strict";
+const LV = window.LEVELS;
+const KEY = "dailyEnglish.v1";
+const STEPS = [
+ {id:"review",  name:"복습",        ico:"🔁", m:[7,15]},
+ {id:"words",   name:"오늘의 단어", ico:"📚", m:[10,20]},
+ {id:"pattern", name:"핵심 표현",   ico:"💡", m:[10,20]},
+ {id:"dialog",  name:"대화 듣기·쉐도잉", ico:"🎧", m:[10,20]},
+ {id:"speak",   name:"말하기",      ico:"🎤", m:[8,15]},
+ {id:"dict",    name:"받아쓰기",    ico:"✍️", m:[6,12]},
+ {id:"quiz",    name:"퀴즈",        ico:"✅", m:[5,10]},
+ {id:"write",   name:"영작·일기",   ico:"📝", m:[4,8]}
+];
 
+/* ---------- 저장소 ---------- */
+let mem = {};
+const store = {
+  get(){ try{ const s = localStorage.getItem(KEY); return s?JSON.parse(s):null; }catch(e){ return mem.data||null; } },
+  set(d){ mem.data=d; try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
+};
+const S = Object.assign({goal:60, rate:0.9, voice:"", done:{}, srs:{}, log:{}, journal:[], level:"basic", steps:{}}, store.get()||{});
+const save = ()=>store.set(S);
+
+/* ---------- 유틸 ---------- */
+const $ = s=>document.querySelector(s);
+const app = $("#app");
+const esc = s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const today = ()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
+const dkey = d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const shuffle = a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick = (a,n)=>shuffle(a).slice(0,n);
+const W = s=>{const [en,ko]=s.split("|");return {en,ko};};
+const norm = s=>s.toLowerCase().replace(/[’']/g,"'").replace(/[^a-z0-9' ]+/g," ").replace(/\s+/g," ").trim();
+const words = s=>norm(s).split(" ").filter(Boolean);
+const hi = ()=>S.goal>=120;
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1800);}
+function lcs(a,b){const m=a.length,n=b.length,d=Array.from({length:m+1},()=>new Array(n+1).fill(0));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=a[i-1]===b[j-1]?d[i-1][j-1]+1:Math.max(d[i-1][j],d[i][j-1]);
+  const keep=new Set();let i=m,j=n;while(i&&j){if(a[i-1]===b[j-1]){keep.add(i-1);i--;j--;}else if(d[i-1][j]>=d[i][j-1])i--;else j--;}return {len:d[m][n],keep};}
+function diffHTML(target, said){const t=words(target),s=words(said);const r=lcs(t,s);
+  return {score:t.length?Math.round(r.len/t.length*100):0, html:t.map((w,i)=>`<span class="${r.keep.has(i)?"m":"x"}">${esc(w)}</span>`).join(" ")};}
+function streak(){let n=0;const d=new Date();if(!(S.log[dkey(d)]>=60))d.setDate(d.getDate()-1);while(S.log[dkey(d)]>=60){n++;d.setDate(d.getDate()-1);}return n;}
+const mins = s=>Math.floor((s||0)/60);
+
+/* ---------- 음성 (TTS) ---------- */
+const synth = window.speechSynthesis;
+let voices=[];
+function loadVoices(){ if(!synth) return; voices = synth.getVoices().filter(v=>/^en[-_]/i.test(v.lang)); }
+if(synth){ loadVoices(); synth.onvoiceschanged = loadVoices; }
+function getVoice(alt){
+  if(!voices.length) return null;
+  let v = voices.find(x=>x.voiceURI===S.voice) || voices.find(x=>/en-US/i.test(x.lang)) || voices[0];
+  if(alt){ const o = voices.filter(x=>x!==v && /en-(US|GB)/i.test(x.lang)); if(o.length) v=o[0]; }
+  return v;
+}
+function speak(text, o={}){
+  return new Promise(res=>{
+    if(!synth){ toast("이 브라우저는 음성 재생을 지원하지 않아요"); return res(); }
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang="en-US"; u.rate = (o.rate||S.rate); const v=getVoice(o.alt); if(v) u.voice=v;
+    if(o.alt && (!v || voices.length<2)) u.pitch=1.25;
+    let done=false; const fin=()=>{if(!done){done=true;res();}};
+    u.onend=fin; u.onerror=fin;
+    setTimeout(fin, 1500 + text.length*120/(u.rate||1));
+    synth.speak(u);
+  });
+}
+function stopSpeak(){ try{ synth && synth.cancel(); }catch(e){} }
+const wait = ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ---------- 음성 인식 ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recOK = !!SR;
+function listen(){
+  return new Promise((res,rej)=>{
+    if(!recOK) return rej("unsupported");
+    let r; try{ r = new SR(); }catch(e){ recOK=false; return rej("unsupported"); }
+    r.lang="en-US"; r.interimResults=false; r.maxAlternatives=3;
+    let got=false;
+    r.onresult = e=>{ got=true; const alts=[...e.results[0]].map(a=>a.transcript); res(alts); };
+    r.onerror = e=>{ if(e.error==="not-allowed"||e.error==="service-not-allowed"){recOK=false;} rej(e.error); };
+    r.onend = ()=>{ if(!got) rej("no-speech"); };
+    try{ r.start(); }catch(e){ recOK=false; rej("unsupported"); }
+  });
+}
+
+/* ---------- 학습 시간 기록 ---------- */
+let ticking=false;
+setInterval(()=>{
+  if(!ticking || document.hidden) return;
+  const k=today(); S.log[k]=(S.log[k]||0)+1;
+  if(L){ L.stepSec=(L.stepSec||0)+1; const el=$("#tmr"); if(el) el.textContent=fmt(L.stepSec)+" / 권장 "+STEPS[L.step].m[hi()?1:0]+"분"; }
+  if(S.log[k]%15===0) save();
+},1000);
+const fmt = s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+
+/* ---------- SRS (라이트너 상자) ---------- */
+const BOX_DAYS=[0,1,2,4,8,16,32];
+function addSRS(wd, lvId){ wd.forEach(x=>{ if(!S.srs[x.en]) S.srs[x.en]={ko:x.ko,box:1,due:today(),lv:lvId}; }); }
+function gradeSRS(en, ok){
+  const c=S.srs[en]; if(!c) return;
+  c.box = ok? Math.min(6,c.box+1) : 1;
+  const d=new Date(); d.setDate(d.getDate()+(ok?BOX_DAYS[c.box]:1)); c.due=dkey(d);
+}
+function dueCards(){ const t=today(); return Object.entries(S.srs).filter(([,c])=>c.due<=t).map(([en,c])=>({en,ko:c.ko})); }
+
+/* ---------- 화면 상태 ---------- */
+let view="home", L=null; // L: 현재 레슨 세션
+
+function lessonOf(lid,i){ const lv=LV.find(x=>x.id===lid); return {lv, ls:lv.lessons[i], i}; }
+function nextLesson(){
+  for(const lv of LV) for(let i=0;i<lv.lessons.length;i++) if(!S.done[lv.id+"-"+i] && lv.id===S.level) return {lid:lv.id,i};
+  for(const lv of LV) for(let i=0;i<lv.lessons.length;i++) if(!S.done[lv.id+"-"+i]) return {lid:lv.id,i};
+  return {lid:S.level,i:0};
+}
+
+/* ---------- 홈 ---------- */
+function renderHome(){
+  ticking=false; stopSpeak();
+  const lv = LV.find(x=>x.id===S.level);
+  document.documentElement.style.setProperty("--lv", lv.color);
+  const sec=S.log[today()]||0, goalSec=S.goal*60, pct=Math.min(100,Math.round(sec/goalSec*100));
+  const nx=nextLesson(), nl=lessonOf(nx.lid,nx.i);
+  const total=LV.reduce((a,l)=>a+l.lessons.length,0), done=Object.keys(S.done).length;
+  const dueN=dueCards().length;
+  const days=[];for(let k=6;k>=0;k--){const d=new Date();d.setDate(d.getDate()-k);days.push(d);}
+  const maxM=Math.max(S.goal,...days.map(d=>mins(S.log[dkey(d)])));
+  app.innerHTML=`
+  <div class="top"><div class="brand">매일 <span>일상영어</span></div>
+   <button class="icon-btn" data-a="settings" aria-label="설정">⚙️</button></div>
+  <div class="card hero">
+   <div class="row between"><div><div class="muted">오늘의 학습 목표</div><h2 style="font-size:24px;font-weight:900">${mins(sec)}분 / ${S.goal}분</h2></div>
+   <div style="font-size:40px">${pct>=100?"🏆":"🔥"}</div></div>
+   <div class="ring"><i style="width:${pct}%"></i></div>
+   <div class="stats">
+    <div class="stat"><b>${streak()}</b><small>연속 학습일</small></div>
+    <div class="stat"><b>${done}/${total}</b><small>완료 레슨</small></div>
+    <div class="stat"><b>${Object.keys(S.srs).length}</b><small>익힌 단어</small></div>
+   </div>
+   <div style="margin-top:16px"><button class="btn white" data-a="start" data-l="${nx.lid}" data-i="${nx.i}">▶ 오늘의 학습 시작 · ${esc(nl.lv.name)} ${nx.i+1}과 ${esc(nl.ls.t)}</button></div>
+   ${dueN?`<div style="margin-top:8px"><button class="btn alt" data-a="reviewOnly" style="background:rgba(255,255,255,.18);color:#fff">🔁 복습할 단어 ${dueN}개만 빠르게</button></div>`:""}
+  </div>
+  <div class="card"><div class="row between"><b>최근 7일 학습 시간</b><span class="muted">목표 ${S.goal}분</span></div>
+   <div class="week">${days.map(d=>{const m=mins(S.log[dkey(d)]);return `<div class="day"><i><b style="height:${Math.min(100,m/maxM*100)}%"></b></i>${"일월화수목금토"[d.getDay()]}<br>${m}분</div>`}).join("")}</div>
+  </div>
+  <div class="sec-title">레벨별 과정</div>
+  <div class="tabs">${LV.map(l=>`<button class="tab ${l.id===S.level?"on":""}" data-a="level" data-l="${l.id}" style="${l.id===S.level?`background:${l.color};border-color:${l.color}`:""}">${l.name}<br><small style="font-weight:500;opacity:.8">${l.en}</small></button>`).join("")}</div>
+  <p class="muted" style="margin:0 0 10px">${esc(lv.desc)}</p>
+  ${lv.lessons.map((ls,i)=>{const d=S.done[lv.id+"-"+i];return `<button class="lesson ${d?"done":""}" data-a="start" data-l="${lv.id}" data-i="${i}">
+   <span class="num">${d?"✓":i+1}</span><span class="grow"><b>${esc(ls.t)}</b><small>${esc(ls.s)} · 단어 ${ls.w.length} · 표현 ${ls.p.length} · 대화 ${ls.d.length}줄</small></span><span class="muted">›</span></button>`}).join("")}
+  <div class="sec-title">하루 학습 루틴 (${S.goal}분 기준)</div>
+  <div class="card">${STEPS.map(s=>`<div class="set"><span>${s.ico} ${s.name}</span><span class="muted">${s.m[hi()?1:0]}분</span></div>`).join("")}</div>
+  ${S.journal.length?`<div class="sec-title">나의 영작 노트</div><div class="card">${S.journal.slice(-5).reverse().map(j=>`<div class="set" style="display:block"><small class="muted">${j.d} · ${esc(j.t)}</small><div>${esc(j.txt)}</div></div>`).join("")}</div>`:""}
+  `;
+}
+
+/* ---------- 설정 ---------- */
+function renderSettings(){
+  ticking=false;
+  app.innerHTML=`<div class="top"><button class="icon-btn" data-a="home">←</button><div class="brand">설정</div><span style="width:40px"></span></div>
+  <div class="card">
+   <div class="set"><div><b>하루 목표</b><div class="muted">2시간을 고르면 반복 횟수가 늘어나요</div></div>
+     <div class="seg">${[60,90,120].map(g=>`<button class="${S.goal===g?"on":""}" data-a="goal" data-v="${g}">${g===60?"1시간":g===90?"1.5시간":"2시간"}</button>`).join("")}</div></div>
+   <div class="set"><div><b>읽기 속도</b><div class="muted">${S.rate.toFixed(2)}배</div></div>
+     <div class="seg">${[0.7,0.9,1.0].map(r=>`<button class="${S.rate===r?"on":""}" data-a="rate" data-v="${r}">${r===0.7?"느리게":r===0.9?"보통":"원어민"}</button>`).join("")}</div></div>
+   <div class="set"><div><b>목소리</b><div class="muted">휴대폰에 설치된 영어 음성</div></div>
+     <select id="voiceSel"><option value="">자동 선택</option>${voices.map(v=>`<option value="${esc(v.voiceURI)}" ${v.voiceURI===S.voice?"selected":""}>${esc(v.name)} (${v.lang})</option>`).join("")}</select></div>
+   <div class="set"><b>음성 테스트</b><button class="btn sm alt" data-a="test">🔊 듣기</button></div>
+  </div>
+  <div class="card"><div class="set"><div><b>학습 기록 초기화</b><div class="muted">완료 레슨·단어·시간 기록이 모두 지워져요</div></div><button class="btn sm ghost" data-a="reset">초기화</button></div></div>
+  <div class="tip">💡 <b>앱으로 설치하기</b>: 안드로이드 크롬에서 이 페이지를 연 뒤 메뉴(⋮) → <b>홈 화면에 추가</b>(또는 <b>앱 설치</b>)를 누르면 아이콘이 생기고 전체 화면 앱처럼 실행돼요. 음성이 안 나오면 [설정 → 텍스트 음성 변환]에서 Google 음성 엔진의 영어 음성을 설치해 주세요.</div>`;
+  const vs=$("#voiceSel"); if(vs) vs.onchange=()=>{S.voice=vs.value;save();speak("This is my voice.");};
+}
+
+/* ---------- 레슨 세션 ---------- */
+function startLesson(lid,i,reviewOnly){
+  const {lv,ls}=lessonOf(lid,i);
+  S.level=lid; document.documentElement.style.setProperty("--lv", lv.color);
+  L={lid,i,lv,ls,reviewOnly:!!reviewOnly,step:0,stepSec:0,st:{}};
+  const key=lid+"-"+i;
+  if(!reviewOnly && S.steps[key]!=null && S.steps[key]<STEPS.length){ L.step=S.steps[key]; }
+  save(); ticking=true; renderStep();
+}
+function goStep(n){
+  stopSpeak();
+  if(L.reviewOnly){ finishReviewOnly(); return; }
+  L.step=n; L.stepSec=0; L.st={}; S.steps[L.lid+"-"+L.i]=n; save();
+  if(n>=STEPS.length) return finishLesson();
+  renderStep(); window.scrollTo(0,0);
+}
+function head(){
+  const s=STEPS[L.step];
+  return `<div class="top"><button class="icon-btn" data-a="home" aria-label="홈">✕</button>
+   <div style="text-align:center"><div class="chip" style="background:var(--lv);color:#fff">${esc(L.lv.name)} ${L.i+1}과</div><div style="font-weight:700;margin-top:2px">${esc(L.ls.t)}</div></div>
+   <button class="icon-btn" data-a="stop" aria-label="소리 멈춤">🔇</button></div>
+  ${L.reviewOnly?"":`<div class="steps">${STEPS.map((x,k)=>`<i class="${k<L.step?"on":k===L.step?"cur":""}"></i>`).join("")}</div>`}
+  <div class="sthead"><div><div class="muted">STEP ${L.step+1} / ${STEPS.length}</div><h2>${s.ico} ${s.name}</h2></div>
+   <div class="timer" id="tmr">${fmt(L.stepSec)} / 권장 ${s.m[hi()?1:0]}분</div></div>`;
+}
+function bar(inner){ return `<div class="bar"><div class="in">${inner}</div></div>`; }
+const nextBtn = (label="다음 단계 →", dis=false)=>`<button class="btn" data-a="next" ${dis?"disabled":""}>${label}</button>`;
+
+function renderStep(){
+  const id=STEPS[L.step].id;
+  ({review:stReview,words:stWords,pattern:stPattern,dialog:stDialog,speak:stSpeak,dict:stDict,quiz:stQuiz,write:stWrite})[id]();
+}
+
+/* STEP 1 복습 */
+function stReview(){
+  const st=L.st;
+  if(!st.cards){
+    let due=dueCards();
+    const lim=hi()?40:20;
+    st.cards=pick(due,lim); st.k=0; st.flip=false; st.ok=0;
+  }
+  if(!st.cards.length){
+    app.innerHTML=head()+`<div class="card" style="text-align:center"><div class="big-emoji">🌱</div><h3>오늘 복습할 단어가 없어요</h3><p class="muted">레슨에서 배운 단어는 1·2·4·8·16일 간격으로 자동 복습에 나타나요.</p></div>`+bar(nextBtn());
+    return;
+  }
+  if(st.k>=st.cards.length){
+    app.innerHTML=head()+`<div class="card" style="text-align:center"><div class="big-emoji">💪</div><h3>복습 완료! ${st.ok}/${st.cards.length} 기억함</h3><p class="muted">모른 단어는 내일 다시 나와요.</p></div>`+bar(nextBtn(L.reviewOnly?"완료":"다음 단계 →"));
+    save(); return;
+  }
+  const c=st.cards[st.k];
+  app.innerHTML=head()+`<p class="muted">영어 단어를 보고 뜻을 떠올린 뒤 카드를 눌러 확인하세요. (${st.k+1}/${st.cards.length})</p>
+   <div class="card flash" data-a="flip"><div class="en">${esc(c.en)}</div>${st.flip?`<div class="ko">${esc(c.ko)}</div>`:`<div class="hint">탭해서 뜻 보기</div>`}</div>
+   <div class="row" style="justify-content:center;margin-bottom:12px"><button class="say" data-a="say" data-t="${esc(c.en)}">🔊</button></div>`+
+   bar(st.flip?`<button class="btn ghost" data-a="srs" data-v="0">😥 몰랐어요</button><button class="btn" data-a="srs" data-v="1">😀 알았어요</button>`:`<button class="btn alt" data-a="flip">뜻 확인하기</button>`);
+  if(!st.flip && !st.spoken){ st.spoken=true; speak(c.en); }
+}
+
+/* STEP 2 단어 */
+function stWords(){
+  const st=L.st, ws=L.ls.w.map(W), rounds=hi()?3:2;
+  if(st.r==null){ st.r=1; st.k=0; st.flip=false; st.mode="list"; }
+  if(st.mode==="list"){
+    app.innerHTML=head()+`<div class="tip">먼저 전체 단어를 들으며 소리 내어 따라 하세요. 그다음 플래시카드로 ${rounds}회 반복합니다.</div>
+     <div class="card">${ws.map(w=>`<div class="ex"><button class="say" data-a="say" data-t="${esc(w.en)}">🔊</button><div class="t"><b>${esc(w.en)}</b><div class="k">${esc(w.ko)}</div></div></div>`).join("")}</div>`+
+     bar(`<button class="btn alt" data-a="playAll">▶ 전체 듣기</button><button class="btn" data-a="wcards">카드 학습 →</button>`);
+    return;
+  }
+  if(st.k>=ws.length){
+    if(st.r<rounds){ st.r++; st.k=0; st.flip=false; st.order=shuffle(ws.map((_,i)=>i)); return stWords(); }
+    addSRS(ws,L.lid); save();
+    app.innerHTML=head()+`<div class="card" style="text-align:center"><div class="big-emoji">🎉</div><h3>단어 ${ws.length}개 ${rounds}회독 완료!</h3><p class="muted">복습 상자에 추가되어 내일부터 자동 복습돼요.</p></div>`+bar(nextBtn());
+    return;
+  }
+  const order=st.order||ws.map((_,i)=>i), w=ws[order[st.k]];
+  const koFirst = st.r===2; // 2회차는 한→영
+  app.innerHTML=head()+`<p class="muted">${st.r}/${rounds}회차 · ${st.k+1}/${ws.length} ${koFirst?"· 뜻을 보고 영어로 말해 보세요":"· 듣고 따라 말한 뒤 뜻 확인"}</p>
+   <div class="card flash" data-a="flip">${koFirst?
+     `<div class="ko" style="margin:0;font-size:26px">${esc(w.ko)}</div>${st.flip?`<div class="en" style="margin-top:12px">${esc(w.en)}</div>`:`<div class="hint">영어로 말해 본 뒤 탭</div>`}`:
+     `<div class="en">${esc(w.en)}</div>${st.flip?`<div class="ko">${esc(w.ko)}</div>`:`<div class="hint">탭해서 뜻 보기</div>`}`}</div>
+   <div class="row" style="justify-content:center;margin-bottom:12px"><button class="say" data-a="say" data-t="${esc(w.en)}">🔊</button></div>`+
+   bar(`<button class="btn" data-a="wnext">${st.flip?"다음 단어 →":"확인"}</button>`);
+  if(!koFirst && !st.flip && st.spokenK!==st.r+"-"+st.k){ st.spokenK=st.r+"-"+st.k; speak(w.en); }
+}
+
+/* STEP 3 핵심 표현 */
+function stPattern(){
+  const st=L.st, need=hi()?5:3;
+  if(!st.c) st.c={};
+  const all=[];
+  app.innerHTML=head()+`<div class="tip">예문마다 🔊 듣고 <b>소리 내어 ${need}번</b> 따라 말할 때마다 숫자 버튼을 누르세요. 모두 채우면 다음 단계가 열려요.</div>`+
+   L.ls.p.map((p,pi)=>`<div class="card"><div class="pattern"><b>${esc(p[0])}</b><div class="muted">${esc(p[1])}</div></div>
+     ${p[2].map((ex,ei)=>{const k=pi+"-"+ei; all.push(k); const n=st.c[k]||0; return `<div class="ex"><button class="say" data-a="say" data-t="${esc(ex[0])}">🔊</button><div class="t"><div style="font-weight:600">${esc(ex[0])}</div><div class="k">${esc(ex[1])}</div></div><button class="cnt ${n>=need?"full":""}" data-a="cnt" data-k="${k}">${n>=need?"✓ 완료":n+"/"+need}</button></div>`}).join("")}</div>`).join("")+
+   bar(`<button class="btn alt" data-a="patAll">▶ 예문 전체 듣기</button>`+nextBtn("다음 →", !all.every(k=>(st.c[k]||0)>=need)));
+  st.need=need;
+}
+
+/* STEP 4 대화 듣기·쉐도잉 */
+function stDialog(){
+  const st=L.st, rounds=hi()?3:2;
+  if(st.phase==null){ st.phase=0; st.hideEn=true; st.hideKo=true; st.sh=0; }
+  const phases=["① 귀로만","② 대본 보기","③ 쉐도잉"];
+  const cls=(st.phase===0&&st.hideEn?"hide-en ":"")+(st.hideKo?"hide-ko":"");
+  const guide=["대본을 보지 않고 2번 들으며 내용을 짐작해 보세요.","대본과 해석을 보면서 들어 보세요. 모르는 부분을 확인하세요.",`한 문장씩 듣고 바로 따라 말하세요. 전체 ${rounds}회 반복 (현재 ${Math.min(st.sh+1,rounds)}회차)`];
+  app.innerHTML=head()+`<div class="seg" style="margin-bottom:10px">${phases.map((p,k)=>`<button class="${st.phase===k?"on":""}" data-a="phase" data-v="${k}" style="flex:1;font-size:12px">${p}</button>`).join("")}</div>
+   <div class="tip">${guide[st.phase]}</div>
+   <div class="row" style="gap:6px;margin-bottom:8px"><button class="btn sm ghost" data-a="tgEn">${st.hideEn?"영어 보기":"영어 가리기"}</button><button class="btn sm ghost" data-a="tgKo">${st.hideKo?"해석 보기":"해석 숨기기"}</button></div>
+   <div class="card ${cls}" id="dlg">${L.ls.d.map((l,k)=>`<div class="line" id="ln${k}"><span class="who ${l[0]}">${l[0]}</span><div class="t"><div class="e">${esc(l[1])}</div><div class="k">${esc(l[2])}</div></div><button class="say" data-a="say" data-t="${esc(l[1])}" data-alt="${l[0]==="B"?1:""}">🔊</button></div>`).join("")}</div>`+
+   bar(st.phase<2?`<button class="btn alt" data-a="dlgPlay">▶ 전체 듣기${st.plays?` (${st.plays})`:""}</button>`+(st.phase===1?`<button class="btn" data-a="phase" data-v="2">쉐도잉 →</button>`:`<button class="btn" data-a="phase" data-v="1">대본 보기 →</button>`):
+     (st.sh>=rounds?nextBtn():`<button class="btn" data-a="shadow">${st.running?"⏸ 진행 중…":"▶ 쉐도잉 "+(st.sh+1)+"회차 시작"}</button>`));
+}
+async function playDialog(shadow){
+  const st=L.st, myStep=L.step, lines=L.ls.d;
+  st.running=true; if(!shadow) {}
+  for(let k=0;k<lines.length;k++){
+    if(!L || L.step!==myStep || !st.running) return;
+    document.querySelectorAll(".line").forEach(e=>e.classList.remove("playing"));
+    const el=$("#ln"+k); if(el){el.classList.add("playing"); el.scrollIntoView({block:"center",behavior:"smooth"});}
+    await speak(lines[k][1],{alt:lines[k][0]==="B"});
+    if(shadow){ await wait(600 + lines[k][1].length*85/S.rate); } else await wait(350);
+  }
+  document.querySelectorAll(".line").forEach(e=>e.classList.remove("playing"));
+  st.running=false;
+  if(shadow){ st.sh++; toast("쉐도잉 "+st.sh+"회차 완료!"); } else { st.plays=(st.plays||0)+1; }
+  if(L && L.step===myStep) stDialog();
+}
+
+/* STEP 5 말하기 */
+function speakItems(){
+  const items=[]; L.ls.d.forEach(l=>items.push({en:l[1],ko:l[2]})); L.ls.p.forEach(p=>p[2].forEach(e=>items.push({en:e[0],ko:e[1]})));
+  return items;
+}
+function stSpeak(){
+  const st=L.st, n=hi()?10:6;
+  if(!st.items){ st.items=pick(speakItems(),n); st.k=0; st.score=[]; st.res=null; }
+  if(st.k>=st.items.length){
+    const avg=st.score.length?Math.round(st.score.reduce((a,b)=>a+b,0)/st.score.length):0;
+    app.innerHTML=head()+`<div class="card" style="text-align:center"><div class="big-emoji">🗣️</div><h3>말하기 완료! 평균 ${avg}점</h3><p class="muted">80점 이상이면 원어민이 알아듣는 수준이에요.</p></div>`+bar(nextBtn());
+    return;
+  }
+  const it=st.items[st.k], r=st.res;
+  app.innerHTML=head()+`<p class="muted">${st.k+1}/${st.items.length} · 한국어를 보고 영어로 말해 보세요</p>
+   <div class="card" style="text-align:center"><div style="font-size:21px;font-weight:700">${esc(it.ko)}</div>
+    ${recOK?`<button class="mic ${st.rec?"rec":""}" data-a="mic">🎤</button><div class="muted">${st.rec?"듣고 있어요… 말해 주세요":"마이크를 누르고 말하기"}</div>`:
+      `<div class="muted" style="margin-top:14px">이 환경에서는 음성 인식을 쓸 수 없어요. 소리 내어 말한 뒤 정답을 확인하고 스스로 채점하세요.</div>`}
+   </div>
+   ${r?`<div class="card"><div class="muted">정답</div><div class="row between"><b>${esc(it.en)}</b><button class="say" data-a="say" data-t="${esc(it.en)}">🔊</button></div>
+     ${r.said!=null?`<div class="muted" style="margin-top:10px">내 발화: “${esc(r.said)}”</div><div class="diff" style="margin-top:6px">${r.html}</div><div class="result ${r.score>=80?"ok":"no"}">${r.score}점 ${r.score>=80?"훌륭해요!":"초록색이 맞은 단어, 빨간색은 다시 연습할 단어예요."}</div>`:""}
+   </div>`:""}`+
+   bar(r?`<button class="btn ghost" data-a="retry">다시</button>`+(r.said==null?`<button class="btn ghost" data-a="self" data-v="50">😥 어려웠어요</button><button class="btn" data-a="self" data-v="100">😀 말했어요</button>`:`<button class="btn" data-a="snext">다음 →</button>`):
+     (recOK?`<button class="btn ghost" data-a="reveal">정답 보기</button>`:`<button class="btn" data-a="reveal">말했어요, 정답 보기</button>`));
+}
+
+/* STEP 6 받아쓰기 */
+function stDict(){
+  const st=L.st, n=hi()?8:5;
+  if(!st.items){ st.items=pick(L.ls.d.map(l=>l[1]).concat(L.ls.p.flatMap(p=>p[2].map(e=>e[0]))),n); st.k=0; st.res=null; st.okN=0; }
+  if(st.k>=st.items.length){
+    app.innerHTML=head()+`<div class="card" style="text-align:center"><div class="big-emoji">👂</div><h3>받아쓰기 ${st.okN}/${st.items.length} 정답</h3></div>`+bar(nextBtn());
+    return;
+  }
+  const t=st.items[st.k], r=st.res;
+  app.innerHTML=head()+`<p class="muted">${st.k+1}/${st.items.length} · 문장을 듣고 그대로 입력하세요 (대소문자·문장부호는 채점하지 않아요)</p>
+   <div class="row" style="gap:8px;margin-bottom:12px"><button class="btn alt" data-a="dplay">🔊 듣기</button><button class="btn ghost" data-a="dslow">🐢 천천히</button></div>
+   <input type="text" id="dIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="들은 문장을 입력하세요" value="${esc(st.typed||"")}">
+   ${r?`<div class="result ${r.score>=100?"ok":"no"}"><div class="diff">${r.html}</div><div style="margin-top:6px">${r.score>=100?"완벽해요! 🎉":"정답률 "+r.score+"% — 빨간 단어를 다시 들어 보세요."}</div></div>`:""}`+
+   bar(r?`<button class="btn" data-a="dnext">다음 →</button>`:`<button class="btn" data-a="dcheck">채점하기</button>`);
+  const inp=$("#dIn"); inp.oninput=()=>st.typed=inp.value; inp.onkeydown=e=>{if(e.key==="Enter"&&!st.res) act("dcheck");};
+  if(!r && st.autoK!==st.k){ st.autoK=st.k; speak(t); }
+}
+
+/* STEP 7 퀴즈 */
+function buildQuiz(){
+  const ws=L.ls.w.map(W), pool=L.lv.lessons.flatMap(l=>l.w.map(W));
+  const Q=[];
+  ws.forEach(w=>{
+    const wrong=pick(pool.filter(x=>x.ko!==w.ko),3);
+    Q.push({type:"mc",q:`“${w.en}”의 뜻은?`,say:w.en,a:w.ko,opts:shuffle([w.ko,...wrong.map(x=>x.ko)])});
+    const wrong2=pick(pool.filter(x=>x.en!==w.en),3);
+    Q.push({type:"mc",q:`“${w.ko}”를 영어로?`,a:w.en,opts:shuffle([w.en,...wrong2.map(x=>x.en)])});
+  });
+  speakItems().forEach(it=>{ const ws2=it.en.split(" "); if(ws2.length>=3&&ws2.length<=11) Q.push({type:"order",q:it.ko,a:it.en,toks:shuffle(ws2)}); });
+  const n=hi()?15:10;
+  const mc=pick(Q.filter(q=>q.type==="mc"),Math.ceil(n*0.6)), od=pick(Q.filter(q=>q.type==="order"),n-mc.length);
+  return shuffle(mc.concat(od));
+}
+function stQuiz(){
+  const st=L.st;
+  if(!st.qs){ st.qs=buildQuiz(); st.k=0; st.okN=0; st.ans=null; st.sel=[]; }
+  if(st.k>=st.qs.length){
+    const p=Math.round(st.okN/st.qs.length*100);
+    app.innerHTML=head()+`<div class="card" style="text-align:center"><div class="big-emoji">${p>=80?"🥇":p>=60?"👍":"📖"}</div><h3>${st.qs.length}문제 중 ${st.okN}개 정답 (${p}점)</h3><p class="muted">${p>=80?"아주 잘했어요!":"틀린 문제는 단어 복습에서 다시 만나요."}</p></div>`+bar(nextBtn());
+    return;
+  }
+  const q=st.qs[st.k];
+  let body="";
+  if(q.type==="mc"){
+    body=`<div class="card"><div class="row between"><b style="font-size:19px">${esc(q.q)}</b>${q.say?`<button class="say" data-a="say" data-t="${esc(q.say)}">🔊</button>`:""}</div></div>`+
+      q.opts.map(o=>{let c="";if(st.ans!=null){if(o===q.a)c="ok";else if(o===st.ans)c="no";}return `<button class="choice ${c}" data-a="pickOpt" data-v="${esc(o)}" ${st.ans!=null?"disabled":""}>${esc(o)}</button>`}).join("");
+  }else{
+    const built=st.sel.map(i=>q.toks[i]).join(" ");
+    body=`<div class="card"><div class="muted">단어를 순서대로 눌러 문장을 완성하세요</div><b style="font-size:18px">${esc(q.q)}</b></div>
+     <div class="tokens">${st.sel.map((i,k)=>`<button class="tok" data-a="untok" data-v="${k}">${esc(q.toks[i])}</button>`).join("")||`<span class="muted">여기에 문장이 만들어져요</span>`}</div>
+     <div class="tokens" style="border-style:solid">${q.toks.map((t,i)=>`<button class="tok ${st.sel.includes(i)?"used":""}" data-a="tok" data-v="${i}">${esc(t)}</button>`).join("")}</div>
+     ${st.ans!=null?`<div class="result ${st.ans?"ok":"no"}">${st.ans?"정답! ":"정답: "}${esc(q.a)}</div>`:""}`;
+    st.built=built;
+  }
+  app.innerHTML=head()+`<p class="muted">${st.k+1}/${st.qs.length} · 정답 ${st.okN}</p>`+body+
+   bar(st.ans!=null?`<button class="btn" data-a="qnext">다음 →</button>`:(q.type==="order"?`<button class="btn ghost" data-a="qclear">지우기</button><button class="btn" data-a="qcheck" ${st.sel.length?"":"disabled"}>확인</button>`:""));
+  if(!st.ans && st.ans!==false && q.type==="mc" && q.say && st.sK!==st.k){ st.sK=st.k; speak(q.say); }
+}
+
+/* STEP 8 영작 */
+function stWrite(){
+  const st=L.st;
+  if(!st.t) st.t=["","",""];
+  app.innerHTML=head()+`<div class="tip">오늘 배운 표현으로 나만의 문장을 써 보세요. 완벽하지 않아도 괜찮아요! 다 쓰면 🔊로 내 문장을 들어 볼 수 있어요.</div>`+
+   L.ls.wr.map((w,k)=>`<div class="card"><b>${k+1}. ${esc(w)}</b><div class="muted" style="margin:4px 0 8px">참고: ${esc(L.ls.p[k%L.ls.p.length][0])}</div>
+     <textarea data-k="${k}" placeholder="영어로 써 보세요">${esc(st.t[k])}</textarea>
+     <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn sm alt" data-a="sayMine" data-k="${k}">🔊 내 문장 듣기</button></div></div>`).join("")+
+   `<div class="card"><b>모범 예문</b>${L.ls.p.map(p=>`<div class="ex"><button class="say" data-a="say" data-t="${esc(p[2][0][0])}">🔊</button><div class="t">${esc(p[2][0][0])}<div class="k">${esc(p[2][0][1])}</div></div></div>`).join("")}</div>`+
+   bar(`<button class="btn" data-a="wsave">저장하고 레슨 완료 🎉</button>`);
+  document.querySelectorAll("textarea").forEach(t=>t.oninput=()=>{st.t[+t.dataset.k]=t.value;});
+}
+
+function finishLesson(){
+  const key=L.lid+"-"+L.i; S.done[key]=today(); delete S.steps[key]; save(); ticking=false;
+  const sec=S.log[today()]||0, left=Math.max(0,S.goal-mins(sec));
+  const idx=L.lv.lessons.length;
+  let nx={lid:L.lid,i:L.i+1};
+  if(nx.i>=idx){ const li=LV.findIndex(x=>x.id===L.lid); nx = li<LV.length-1?{lid:LV[li+1].id,i:0}:null; }
+  app.innerHTML=`<div style="padding-top:40px"></div><div class="card" style="text-align:center"><div class="big-emoji">🏅</div>
+   <h2 style="font-weight:900;margin:8px 0">${esc(L.lv.name)} ${L.i+1}과 완료!</h2>
+   <p class="muted">오늘 학습 ${mins(sec)}분 · 연속 ${streak()}일</p>
+   ${left>0?`<div class="tip" style="text-align:left">⏱ 오늘 목표까지 <b>${left}분</b> 남았어요. 다음 레슨으로 이어 가거나 대화 쉐도잉을 한 번 더 해 보세요.</div>`:`<div class="tip" style="text-align:left">🏆 오늘 목표 ${S.goal}분 달성! 내일도 만나요.</div>`}
+   </div>
+   ${nx?`<button class="btn" data-a="start" data-l="${nx.lid}" data-i="${nx.i}" style="margin-bottom:10px">다음 레슨: ${esc(lessonOf(nx.lid,nx.i).lv.name)} ${nx.i+1}과 ${esc(lessonOf(nx.lid,nx.i).ls.t)} →</button>`:""}
+   <button class="btn alt" data-a="start" data-l="${L.lid}" data-i="${L.i}" style="margin-bottom:10px">이 레슨 다시 하기</button>
+   <button class="btn ghost" data-a="home">홈으로</button>`;
+  if(nx) { S.level=nx.lid; save(); }
+  L=null;
+}
+function finishReviewOnly(){ save(); L=null; view="home"; renderHome(); toast("복습 완료!"); }
+
+/* ---------- 이벤트 ---------- */
+async function act(a, el){
+  const st=L&&L.st, d=el?el.dataset:{};
+  switch(a){
+   case "home": stopSpeak(); if(L){ save(); } L=null; view="home"; renderHome(); window.scrollTo(0,0); break;
+   case "settings": view="settings"; renderSettings(); break;
+   case "level": S.level=d.l; save(); renderHome(); break;
+   case "start": startLesson(d.l, +d.i); window.scrollTo(0,0); break;
+   case "reviewOnly": startLesson(S.level,0,true); L.step=0; renderStep(); break;
+   case "goal": S.goal=+d.v; save(); renderSettings(); break;
+   case "rate": S.rate=+d.v; save(); renderSettings(); speak("How are you today?"); break;
+   case "test": speak("Hello! Let's study English every day."); break;
+   case "reset": if(el.dataset.c){ try{localStorage.removeItem(KEY);}catch(e){} mem={}; location.reload(); } else { el.dataset.c=1; el.textContent="한 번 더 누르면 삭제"; } break;
+   case "stop": stopSpeak(); if(st) st.running=false; break;
+   case "say": stopSpeak(); speak(d.t,{alt:!!d.alt}); break;
+   case "next": goStep(L.step+1); break;
+   case "flip": if(STEPS[L.step].id==="review"||L.reviewOnly){ st.flip=true; stReview(); } else { st.flip=true; stWords(); } break;
+   case "srs": { const c=st.cards[st.k]; gradeSRS(c.en, d.v==="1"); if(d.v==="1") st.ok++; st.k++; st.flip=false; st.spoken=false; save(); stReview(); } break;
+   case "playAll": { stopSpeak(); const myStep=L.step; for(const w of L.ls.w.map(W)){ if(!L||L.step!==myStep||st.mode!=="list") break; await speak(w.en); await wait(900); } } break;
+   case "wcards": st.mode="cards"; st.order=L.ls.w.map((_,i)=>i); stWords(); break;
+   case "wnext": if(!st.flip){ st.flip=true; if(st.r===2){ speak(L.ls.w.map(W)[st.order[st.k]].en); } } else { st.k++; st.flip=false; } stWords(); break;
+   case "cnt": { const k=d.k; st.c[k]=Math.min(st.need,(st.c[k]||0)+1); const [pi,ei]=k.split("-").map(Number); if(st.c[k]<st.need) speak(L.ls.p[pi][2][ei][0]); stPattern(); } break;
+   case "patAll": { stopSpeak(); const myStep=L.step; for(const p of L.ls.p) for(const e of p[2]){ if(!L||L.step!==myStep) return; await speak(e[0]); await wait(1200); } } break;
+   case "phase": st.phase=+d.v; st.running=false; stopSpeak(); st.hideEn=st.phase===0; st.hideKo=st.phase!==1; stDialog(); break;
+   case "tgEn": st.hideEn=!st.hideEn; stDialog(); break;
+   case "tgKo": st.hideKo=!st.hideKo; stDialog(); break;
+   case "dlgPlay": if(st.running) return; stopSpeak(); playDialog(false); break;
+   case "shadow": if(st.running) return; stopSpeak(); st.hideEn=false; stDialog(); playDialog(true); break;
+   case "mic": {
+     if(st.rec) return; st.rec=true; stSpeak();
+     try{ const alts=await listen(); const it=st.items[st.k];
+       let best=null; alts.forEach(s=>{const r=diffHTML(it.en,s); if(!best||r.score>best.score) best={...r,said:s};});
+       st.res=best; st.score.push(best.score);
+     }catch(e){ if(!recOK) toast("음성 인식을 사용할 수 없어 자가 채점으로 바꿀게요"); else toast(e==="no-speech"?"소리가 들리지 않았어요. 다시 해 보세요":"인식 오류: "+e); }
+     st.rec=false; if(L&&STEPS[L.step].id==="speak") { stSpeak(); if(st.res) speak(st.items[st.k].en); }
+   } break;
+   case "reveal": st.res={said:null}; stSpeak(); speak(st.items[st.k].en); break;
+   case "self": st.score.push(+d.v); st.k++; st.res=null; stSpeak(); break;
+   case "retry": if(st.res&&st.res.said!=null) st.score.pop(); st.res=null; stSpeak(); break;
+   case "snext": st.k++; st.res=null; stSpeak(); break;
+   case "dplay": stopSpeak(); speak(st.items[st.k]); break;
+   case "dslow": stopSpeak(); speak(st.items[st.k],{rate:0.6}); break;
+   case "dcheck": { const t=st.items[st.k]; const r=diffHTML(t, st.typed||""); st.res=r; if(r.score>=100) st.okN++; stDict(); speak(t); } break;
+   case "dnext": st.k++; st.res=null; st.typed=""; stDict(); break;
+   case "pickOpt": { const q=st.qs[st.k]; st.ans=d.v; if(d.v===q.a){ st.okN++; } else { const w=L.ls.w.map(W).find(x=>x.en===q.a||x.ko===q.a); if(w&&S.srs[w.en]) gradeSRS(w.en,false); } stQuiz(); } break;
+   case "tok": st.sel.push(+d.v); stQuiz(); break;
+   case "untok": st.sel.splice(+d.v,1); stQuiz(); break;
+   case "qclear": st.sel=[]; stQuiz(); break;
+   case "qcheck": { const q=st.qs[st.k]; const ok=norm(st.built)===norm(q.a); st.ans=ok; if(ok) st.okN++; stQuiz(); speak(q.a); } break;
+   case "qnext": st.k++; st.ans=null; st.sel=[]; stQuiz(); break;
+   case "sayMine": { const t=(st.t[+d.k]||"").trim(); if(t) speak(t); else toast("먼저 문장을 써 보세요"); } break;
+   case "wsave": { const txt=st.t.filter(x=>x.trim()).join(" / "); if(txt){ S.journal.push({d:today(),t:L.ls.t,txt}); if(S.journal.length>200) S.journal.shift(); } goStep(STEPS.length); } break;
+  }
+}
+document.addEventListener("click", e=>{ const el=e.target.closest("[data-a]"); if(!el||el.disabled) return; act(el.dataset.a, el); });
+document.addEventListener("visibilitychange", ()=>{ if(document.hidden){ save(); stopSpeak(); } });
+window.addEventListener("pagehide", save);
+
+renderHome();
+if("serviceWorker" in navigator){ try{ navigator.serviceWorker.register("sw.js").catch(()=>{}); }catch(e){} }
+})();
+</script>
+</body>
+</html>
